@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build for iOS Simulator
+        # -skipMacroValidation trusts the Composable Architecture macros,
+        # which otherwise require interactive approval on a clean build.
+        run: |
+          xcodebuild build \
+            -project PatternKitiOSTCASwiftUI.xcodeproj \
+            -scheme PatternKitiOSTCASwiftUI \
+            -destination 'generic/platform=iOS Simulator' \
+            -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO
